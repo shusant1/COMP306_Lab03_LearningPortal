@@ -1,0 +1,30 @@
+﻿@model COMP306_Lab03_LearningPortal.Models.ResourceListViewModel
+
+@{
+    ViewData["Title"] = "Resource Details";
+}
+
+<div class="container mt-4">
+
+    <h2>@Model.Title</h2>
+
+    <hr />
+
+    <p><strong>Description:</strong> @Model.Description</p>
+
+    <p><strong>Category:</strong> @Model.CategoryName</p>
+
+    <p><strong>Author:</strong> @Model.AuthorName</p>
+
+    <p>
+        <strong>Created:</strong>
+        @Model.CreatedDate.ToString("MMM dd, yyyy")
+    </p>
+
+    <p><strong>Views:</strong> @Model.ViewCount</p>
+
+    <a asp-action="Index" class="btn btn-secondary">
+        Back to Resources
+    </a>
+
+</div>

@@ -1,0 +1,32 @@
+﻿@model COMP306_Lab03_LearningPortal.Models.LearningResource
+
+@{
+    ViewData["Title"] = "Delete Resource";
+}
+
+<div class="container mt-4" style="max-width: 600px;">
+
+    <h2>Delete Learning Resource</h2>
+
+    <div class="alert alert-warning">
+        Are you sure you want to delete this resource?
+    </div>
+
+    <h4>@Model.Title</h4>
+
+    <p>@Model.Description</p>
+
+    <form asp-action="DeleteConfirmed"
+          asp-route-id="@Model.ResourceID"
+          method="post">
+
+        <button type="submit" class="btn btn-danger">
+            Delete Resource
+        </button>
+
+        <a asp-action="Index" class="btn btn-secondary">
+            Cancel
+        </a>
+
+    </form>
+</div>

@@ -1,0 +1,142 @@
+﻿@model List<COMP306_Lab03_LearningPortal.Models.ResourceListViewModel>
+
+@{
+    ViewData["Title"] = "Learning Resources";
+}
+
+<div class="container mt-4">
+
+    <h2>Learning Resources</h2>
+    <p>Browse available learning materials.</p>
+
+    <form asp-controller="Resources"
+          asp-action="Index"
+          method="get"
+          class="row g-2 mb-3">
+
+        <div class="col-md-4">
+            <label class="form-label">Title or Topic</label>
+            <input type="text"
+                   name="title"
+                   value="@ViewBag.SearchTitle"
+                   class="form-control"
+                   placeholder="Search title or topic" />
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label">Author</label>
+            <input type="text"
+                   name="author"
+                   value="@ViewBag.SearchAuthor"
+                   class="form-control"
+                   placeholder="Search instructor" />
+        </div>
+
+        <div class="col-md-4 d-flex align-items-end gap-2">
+            <button type="submit" class="btn btn-primary">
+                Search
+            </button>
+
+            <a asp-action="Index" class="btn btn-secondary">
+                Clear
+            </a>
+        </div>
+
+    </form>
+
+    <div class="mb-3">
+
+        <a asp-action="Index"
+           asp-route-sort="newest"
+           asp-route-title="@ViewBag.SearchTitle"
+           asp-route-author="@ViewBag.SearchAuthor"
+           class="btn @(ViewBag.Sort == "newest" ? "btn-primary" : "btn-outline-primary")">
+            Newest First
+        </a>
+
+        <a asp-action="Index"
+           asp-route-sort="popular"
+           asp-route-title="@ViewBag.SearchTitle"
+           asp-route-author="@ViewBag.SearchAuthor"
+           class="btn @(ViewBag.Sort == "popular" ? "btn-primary" : "btn-outline-primary")">
+            Most Popular
+        </a>
+
+    </div>
+
+    @if (User.IsInRole("Instructor"))
+    {
+        <a asp-controller="Resources"
+           asp-action="Create"
+           class="btn btn-primary mb-3">
+            Add Resource
+        </a>
+    }
+
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Author</th>
+                <th>Date</th>
+                <th>Views</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="7" class="text-center">
+                        No resources found.
+                    </td>
+                </tr>
+            }
+
+            @foreach (var resource in Model)
+            {
+                <tr>
+                    <td>@resource.Title</td>
+                    <td>@resource.Description</td>
+                    <td>@resource.CategoryName</td>
+                    <td>@resource.AuthorName</td>
+                    <td>@resource.CreatedDate.ToString("MMM dd, yyyy")</td>
+                    <td>@resource.ViewCount</td>
+
+                    <td>
+                        <a asp-action="Details"
+                           asp-route-id="@resource.ResourceID"
+                           class="btn btn-sm btn-info">
+                            View
+                        </a>
+
+                        @if (User.IsInRole("Instructor") &&
+                                            User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
+                                            == resource.AuthorID.ToString())
+                        {
+                            <a asp-action="Edit"
+                               asp-route-id="@resource.ResourceID"
+                               class="btn btn-sm btn-primary">
+                                Edit
+                            </a>
+
+                            <a asp-action="Delete"
+                               asp-route-id="@resource.ResourceID"
+                               class="btn btn-sm btn-danger">
+                                Delete
+                            </a>
+
+                        }
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+</div>

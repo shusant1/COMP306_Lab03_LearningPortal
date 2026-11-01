@@ -1,0 +1,60 @@
+﻿@model COMP306_Lab03_LearningPortal.Models.ResourceCreateViewModel
+
+@{
+    ViewData["Title"] = "Add Resource";
+}
+
+<div class="container mt-4" style="max-width: 600px;">
+
+    <h2>Add Learning Resource</h2>
+    <p>Enter the details of your learning material.</p>
+
+    <form asp-controller="Resources"
+          asp-action="Create" method="post">
+
+        <div asp-validation-summary="ModelOnly"
+             class="text-danger"></div>
+
+        <div class="mb-3">
+            <label asp-for="Title" class="form-label"></label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title"
+                  class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description"
+                   class="form-label"></label>
+            <textarea asp-for="Description"
+                      class="form-control" rows="4"></textarea>
+            <span asp-validation-for="Description"
+                  class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="CategoryID"
+                   class="form-label">Category</label>
+
+            <select asp-for="CategoryID"
+                    asp-items="ViewBag.Categories"
+                    class="form-select">
+                <option value="0">-- Select Category --</option>
+            </select>
+
+            <span asp-validation-for="CategoryID"
+                  class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            Save Resource
+        </button>
+
+        <a asp-action="Index"
+           class="btn btn-secondary">Cancel</a>
+
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
